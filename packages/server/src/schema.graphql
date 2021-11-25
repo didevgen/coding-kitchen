@@ -1,0 +1,58 @@
+scalar Upload
+
+type User {
+  id: String
+  email: String
+  name: String
+}
+
+type Auth {
+  token: String
+}
+
+input UserInput {
+  name: String!
+  email: String!
+  password: String!
+}
+
+type Comment {
+  id: String
+  comment: String
+  author: User
+}
+
+type Post {
+  id: String
+  description: String
+  imageUrl: String
+  author: User
+  isLiked: Boolean
+  lazyComments: [Comment]
+}
+
+input PostInput {
+  description: String!
+}
+
+type Query {
+  users: [User]
+  user(id: String): User
+  getUserInfo: User
+
+  posts: [Post]
+  post(postId: String): Post
+}
+
+type Mutation {
+  createUser(userData: UserInput): User
+  login(email: String!, password: String!): Auth
+
+  createPost(postData: PostInput, image: Upload!): Post
+  deletePost(id: String): Boolean
+  likePost(postId: String, isLiked: Boolean): Boolean
+  commentPost(postId: String, text: String): Boolean
+  commentPostImmidiateUpdate(postId: String, text: String): Post
+  deleteComment(commentId: String): Boolean
+}
+
